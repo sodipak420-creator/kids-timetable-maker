@@ -36,11 +36,11 @@
     <div class="grid grid-cols-2 gap-3 mb-3 text-xs">
       <div>
         <label class="block uppercase font-bold text-slate-400 mb-1">Child Name</label>
-        <input id="childName" type="text" value="Aarav Sharma" oninput="updateLiveView()" class="w-full px-3 py-2 bg-slate-950 rounded-lg border border-slate-700 font-medium focus:outline-none focus:border-indigo-500" />
+        <input id="childName" type="text" value="Aarav Dharma" oninput="updateLiveView()" class="w-full px-3 py-2 bg-slate-950 rounded-lg border border-slate-700 font-medium focus:outline-none focus:border-indigo-500" />
       </div>
       <div>
         <label class="block uppercase font-bold text-slate-400 mb-1">Class / Grade</label>
-        <input id="childGrade" type="text" value="Class 7-B" oninput="updateLiveView()" class="w-full px-3 py-2 bg-slate-950 rounded-lg border border-slate-700 font-medium focus:outline-none focus:border-indigo-500" />
+        <input id="childGrade" type="text" value="Class 7-C" oninput="updateLiveView()" class="w-full px-3 py-2 bg-slate-950 rounded-lg border border-slate-700 font-medium focus:outline-none focus:border-indigo-500" />
       </div>
     </div>
 
@@ -59,7 +59,7 @@
 
     <!-- Dynamic Periods Control Bar -->
     <div class="flex items-center justify-between bg-slate-950 p-2.5 rounded-xl border border-slate-700 mb-4 text-xs">
-      <span class="text-slate-300 font-medium">Daily School Periods: <b id="periodCountText" class="text-indigo-400 font-mono text-sm">7</b></span>
+      <span class="text-slate-300 font-medium">Daily School Periods: <b id="periodCountText" class="text-indigo-400 font-mono text-sm">8</b></span>
       <div class="flex gap-2">
         <button type="button" onclick="removePeriod()" class="px-3 py-1.5 bg-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white rounded-lg font-bold transition-all border border-rose-500/30">
           − Cut Period
@@ -72,11 +72,11 @@
 
     <!-- Scrollable Printable Card View -->
     <div class="overflow-x-auto pb-2">
-      <div id="timetableCard" class="min-w-[620px] bg-white text-slate-800 p-5 rounded-2xl border-2 border-indigo-200 shadow-xl transition-all">
+      <div id="timetableCard" class="min-w-[640px] bg-white text-slate-800 p-6 rounded-2xl border-2 border-indigo-200 shadow-xl transition-all">
         <div id="cardHeaderBorder" class="flex justify-between items-center border-b-2 border-indigo-500 pb-3 mb-3">
           <div>
-            <h2 id="viewName" class="text-xl font-black text-indigo-700">Aarav Sharma</h2>
-            <p id="viewGrade" class="text-xs font-bold text-slate-500">Class 7-B • Weekly Routine</p>
+            <h2 id="viewName" class="text-xl font-black text-indigo-700">Aarav Dharma</h2>
+            <p id="viewGrade" class="text-xs font-bold text-slate-500">Class 7-C • Weekly Routine</p>
           </div>
           <span id="badgeYear" class="text-[11px] font-extrabold uppercase tracking-wider bg-indigo-100 text-indigo-800 px-3 py-1.5 rounded-lg">2026 Academic Year</span>
         </div>
@@ -84,15 +84,15 @@
         <table class="w-full text-xs text-center border-collapse">
           <thead>
             <tr id="tableHeader" class="bg-indigo-50 text-indigo-900 border-b border-indigo-200">
-              <!-- Dynamically rendered headers -->
+              <!-- Rendered via JS -->
             </tr>
           </thead>
           <tbody id="tableBody" class="divide-y divide-slate-200 text-[11px]">
-            <!-- Dynamically rendered rows -->
+            <!-- Rendered via JS -->
           </tbody>
         </table>
 
-        <div class="mt-4 pt-2 border-t border-slate-200 flex justify-between items-center text-[10px] text-slate-400 font-medium">
+        <div class="mt-4 pt-3 border-t border-slate-200 flex justify-between items-center text-[10px] text-slate-400 font-medium">
           <span>✨ "Small daily efforts lead to big success!"</span>
           <span>Parent Signature: ____________</span>
         </div>
@@ -116,7 +116,7 @@
   </main>
 
   <script>
-    let periodCount = 7;
+    let periodCount = 8;
     let currentTheme = 'indigo';
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -127,7 +127,6 @@
         badge: 'bg-indigo-100 text-indigo-800',
         thead: 'bg-indigo-50 text-indigo-900 border-indigo-200',
         dayCol: 'text-indigo-900',
-        focusBorder: 'focus:border-indigo-400',
         cardBorder: 'border-indigo-200'
       },
       emerald: {
@@ -136,7 +135,6 @@
         badge: 'bg-emerald-100 text-emerald-800',
         thead: 'bg-emerald-50 text-emerald-900 border-emerald-200',
         dayCol: 'text-emerald-900',
-        focusBorder: 'focus:border-emerald-400',
         cardBorder: 'border-emerald-200'
       },
       rose: {
@@ -145,7 +143,6 @@
         badge: 'bg-rose-100 text-rose-800',
         thead: 'bg-rose-50 text-rose-900 border-rose-200',
         dayCol: 'text-rose-900',
-        focusBorder: 'focus:border-rose-400',
         cardBorder: 'border-rose-200'
       },
       amber: {
@@ -154,7 +151,6 @@
         badge: 'bg-amber-100 text-amber-800',
         thead: 'bg-amber-50 text-amber-900 border-amber-200',
         dayCol: 'text-amber-900',
-        focusBorder: 'focus:border-amber-400',
         cardBorder: 'border-amber-200'
       },
       sky: {
@@ -163,7 +159,6 @@
         badge: 'bg-sky-100 text-sky-800',
         thead: 'bg-sky-50 text-sky-900 border-sky-200',
         dayCol: 'text-sky-900',
-        focusBorder: 'focus:border-sky-400',
         cardBorder: 'border-sky-200'
       },
       purple: {
@@ -172,23 +167,21 @@
         badge: 'bg-purple-100 text-purple-800',
         thead: 'bg-purple-50 text-purple-900 border-purple-200',
         dayCol: 'text-purple-900',
-        focusBorder: 'focus:border-purple-400',
         cardBorder: 'border-purple-200'
       }
     };
 
     const defaultPool = [
-      ["Maths", "English", "Science", "Hindi", "Social", "Sanskrit", "Computer"],
-      ["Science", "Maths", "Social", "English", "Hindi", "Games", "Library"],
-      ["English", "Science", "Maths", "Drawing", "Hindi", "Social", "Music"],
-      ["Maths", "Hindi", "Social", "Science", "English", "PT/Sports", "Moral Sci"],
-      ["Social", "English", "Science", "Maths", "Hindi", "Computer", "GK Quiz"],
-      ["GK / Quiz", "Art", "Sports", "Library", "Craft", "Science Lab", "Free Time"]
+      ["Maths", "English", "Science", "Hindi", "Social", "Sanskrit", "Computer", "PT"],
+      ["Science", "Maths", "Social", "English", "Hindi", "Games", "Library", "Drawing"],
+      ["English", "Science", "Maths", "Drawing", "Hindi", "Social", "Music", "Study"],
+      ["Maths", "Hindi", "Social", "Science", "English", "PT/Sports", "Moral Sci", "GK"],
+      ["Social", "English", "Science", "Maths", "Hindi", "Computer", "GK Quiz", "Library"],
+      ["GK / Quiz", "Art", "Sports", "Library", "Craft", "Science Lab", "Games", "Free Time"]
     ];
 
     let scheduleData = days.map((day, i) => {
-      let periods = [...defaultPool[i]];
-      return { day, periods };
+      return { day, periods: [...defaultPool[i]] };
     });
 
     let deferredPrompt = null;
@@ -213,7 +206,7 @@
       const t = themeColors[theme];
 
       const card = document.getElementById('timetableCard');
-      card.className = `min-w-[620px] bg-white text-slate-800 p-5 rounded-2xl border-2 ${t.cardBorder} shadow-xl transition-all`;
+      card.className = `min-w-[640px] bg-white text-slate-800 p-6 rounded-2xl border-2 ${t.cardBorder} shadow-xl transition-all`;
 
       const header = document.getElementById('cardHeaderBorder');
       header.className = `flex justify-between items-center border-b-2 ${t.headerBorder} pb-3 mb-3`;
@@ -244,7 +237,7 @@
           const val = row.periods[p] || "Study";
           periodInputs += `
             <td class="p-1">
-              <input type="text" value="${val}" onchange="updateCell(${dayIdx}, ${p}, this.value)" class="w-full min-w-[55px] text-center bg-transparent border-b border-transparent ${t.focusBorder} focus:outline-none font-medium" />
+              <input type="text" value="${val}" oninput="updateCell(${dayIdx}, ${p}, this.value)" class="w-full min-w-[55px] text-center bg-transparent border-b border-transparent focus:border-indigo-400 focus:outline-none font-semibold text-slate-800" />
             </td>
           `;
         }
@@ -263,7 +256,7 @@
 
     function addPeriod() {
       if (periodCount >= 9) {
-        alert("Maximum 9 periods supported per day.");
+        alert("Maximum 9 periods supported.");
         return;
       }
       periodCount++;
@@ -289,12 +282,30 @@
 
     function downloadPlannerImage() {
       const card = document.getElementById('timetableCard');
-      html2canvas(card, { scale: 2 }).then((canvas) => {
+
+      // html2canvas onclone converts input fields into real printed text
+      html2canvas(card, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        onclone: (clonedDoc) => {
+          const inputs = clonedDoc.querySelectorAll('#tableBody input');
+          inputs.forEach((input) => {
+            const span = clonedDoc.createElement('span');
+            span.innerText = input.value || '-';
+            span.style.cssText = 'display:block; width:100%; text-align:center; font-weight:700; color:#1e293b; font-size:11px; padding:4px 2px;';
+            input.parentNode.replaceChild(span, input);
+          });
+        }
+      }).then((canvas) => {
         canvas.toBlob((blob) => {
-          if (!blob) return;
+          if (!blob) {
+            alert('Failed to create image.');
+            return;
+          }
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
-          a.download = 'school-timetable.png';
+          a.download = 'kids-school-timetable.png';
           a.href = url;
           document.body.appendChild(a);
           a.click();
@@ -308,7 +319,20 @@
 
     function printTimetable() {
       const card = document.getElementById('timetableCard');
-      html2canvas(card, { scale: 2 }).then((canvas) => {
+      html2canvas(card, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        onclone: (clonedDoc) => {
+          const inputs = clonedDoc.querySelectorAll('#tableBody input');
+          inputs.forEach((input) => {
+            const span = clonedDoc.createElement('span');
+            span.innerText = input.value || '-';
+            span.style.cssText = 'display:block; width:100%; text-align:center; font-weight:700; color:#1e293b; font-size:11px; padding:4px 2px;';
+            input.parentNode.replaceChild(span, input);
+          });
+        }
+      }).then((canvas) => {
         const dataUrl = canvas.toDataURL('image/png');
         const win = window.open('', '_blank');
         win.document.write(`
@@ -334,4 +358,5 @@
     renderTable();
   </script>
 </body>
-</html>
+  </html>
+  
