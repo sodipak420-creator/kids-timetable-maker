@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kids School Timetable & Study Planner</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#6366f1" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center p-3">
+
+  <main class="w-full max-w-xl bg-slate-800 rounded-2xl shadow-xl p-5 border border-slate-700 mt-2 mb-8">
+    <!-- PWA Install Banner -->
+    <div id="installBanner" class="hidden mb-4 p-3 bg-indigo-500/10 border border-indigo-500/30 rounded-xl flex items-center justify-between">
+      <div class="text-xs">
+        <p class="font-bold text-indigo-400">Install Planner App</p>
+        <p class="text-slate-400">Create kid schedules anytime offline</p>
+      </div>
+      <button onclick="installPWA()" class="px-3 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold rounded-lg transition-all">
+        Install
+      </button>
+    </div>
+
+    <!-- Header -->
+    <div class="text-center mb-5">
+      <h1 class="text-2xl font-bold text-indigo-400">Kids Study & School Planner</h1>
+      <p class="text-xs text-slate-400 mt-1">Make colorful, printable weekly routines in 60 seconds</p>
+    </div>
+
+    <!-- Student Details -->
+    <div class="grid grid-cols-2 gap-3 mb-4 text-xs">
+      <div>
+        <label class="block uppercase font-bold text-slate-400 mb-1">Child Name</label>
+        <input id="childName" type="text" value="Aarav Sharma" oninput="updateLiveView()" class="w-full px-3 py-2 bg-slate-950 rounded-lg border border-slate-700 font-medium focus:outline-none focus:border-indigo-500" />
+      </div>
+      <div>
+        <label class="block uppercase font-bold text-slate-400 mb-1">Class / Grade</label>
+        <input id="childGrade" type="text" value="Class 4-B" oninput="updateLiveView()" class="w-full px-3 py-2 bg-slate-950 rounded-lg border border-slate-700 font-medium focus:outline-none focus:border-indigo-500" />
+      </div>
+    </div>
+
+    <!-- Live Interactive Printable Card -->
+    <div class="overflow-x-auto pb-2">
+      <div id="timetableCard" class="min-w-[500px] bg-white text-slate-800 p-5 rounded-xl border border-slate-300 shadow-md">
+        <div class="flex justify-between items-center border-b-2 border-indigo-500 pb-3 mb-3">
+          <div>
+            <h2 id="viewName" class="text-lg font-extrabold text-indigo-700">Aarav Sharma</h2>
+            <p id="viewGrade" class="text-xs font-semibold text-slate-500">Class 4-B • Weekly Routine</p>
+          </div>
+          <span class="text-[11px] font-bold uppercase tracking-wider bg-indigo-100 text-indigo-800 px-2 py-1 rounded">2026 Academic Year</span>
+        </div>
+
+        <table class="w-full text-xs text-center border-collapse">
+          <thead>
+            <tr class="bg-indigo-50 text-indigo-900 border-b border-indigo-200">
+              <th class="p-2 font-bold text-left">Day</th>
+              <th class="p-2 font-bold">Period 1</th>
+              <th class="p-2 font-bold">Period 2</th>
+              <th class="p-2 font-bold">Period 3</th>
+              <th class="p-2 font-bold">Period 4</th>
+              <th class="p-2 font-bold">Evening Study</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody" class="divide-y divide-slate-200 text-[11px]">
+            <!-- Generated rows -->
+          </tbody>
+        </table>
+
+        <div class="mt-4 pt-2 border-t border-slate-200 flex justify-between items-center text-[10px] text-slate-400 font-medium">
+          <span>✨ "Small daily efforts lead to big success!"</span>
+          <span>Parent Signature: ____________</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="grid grid-cols-2 gap-3 mt-4">
+      <button onclick="downloadPlannerImage()" class="w-full bg-indigo-600 hover:bg-indigo-700 font-bold py-2.5 rounded-lg text-white text-xs transition-colors shadow-lg shadow-indigo-600/20">
+        Save Image (PNG) 📥
+      </button>
+      <button onclick="printTimetable()" class="w-full bg-emerald-600 hover:bg-emerald-700 font-bold py-2.5 rounded-lg text-white text-xs transition-colors shadow-lg shadow-emerald-600/20">
+        Print / PDF 🖨️
+      </button>
+    </div>
+
+    <!-- Adsterra Monetization Slot -->
+    <div class="mt-6 pt-4 border-t border-slate-700/60 flex justify-center">
+      <iframe srcdoc="<!DOCTYPE html><html><head></head><body style='margin:0;display:flex;justify-content:center;'><script type='text/javascript'>atOptions={'key':'45775fbece61c0f117b4d413d29f50b6','format':'iframe','height':50,'width':320,'params':{}};</script><script type='text/javascript' src='https://www.highrevenueformat.com/45775fbece61c0f117b4d413d29f50b6/invoke.js'></script></body></html>" width="320" height="50" style="border:none; overflow:hidden;" scrolling="no" sandbox="allow-scripts allow-same-origin allow-popups allow-top-navigation"></iframe>
+    </div>
+  </main>
+
+  <script>
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBanner').classList.remove('hidden');
+    });
+
+    function installPWA() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        deferredPrompt = null;
+        document.getElementById('installBanner').classList.add('hidden');
+      });
+    }
+
+    const defaultSchedule = [
+      { day: "Mon", p1: "Maths", p2: "English", p3: "Science", p4: "Hindi", eve: "Homework" },
+      { day: "Tue", p1: "Science", p2: "Maths", p3: "Social", p4: "Computer", eve: "Maths Practice" },
+      { day: "Wed", p1: "English", p2: "Science", p3: "Maths", p4: "Art", eve: "Reading" },
+      { day: "Thu", p1: "Maths", p2: "Hindi", p3: "Social", p4: "Games", eve: "Science Rev" },
+      { day: "Fri", p1: "Social", p2: "English", p3: "Science", p4: "Music", eve: "Projects" },
+      { day: "Sat", p1: "GK / Quiz", p2: "Library", p3: "Sports", p4: "Craft", eve: "Free Time" }
+    ];
+
+    function renderTable() {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = defaultSchedule.map((row, i) => `
+        <tr class="hover:bg-slate-50 transition-colors">
+          <td class="p-2 font-bold text-left text-indigo-900">${row.day}</td>
+          <td class="p-1"><input type="text" value="${row.p1}" class="w-full text-center bg-transparent border-b border-transparent focus:border-indigo-400 focus:outline-none" /></td>
+          <td class="p-1"><input type="text" value="${row.p2}" class="w-full text-center bg-transparent border-b border-transparent focus:border-indigo-400 focus:outline-none" /></td>
+          <td class="p-1"><input type="text" value="${row.p3}" class="w-full text-center bg-transparent border-b border-transparent focus:border-indigo-400 focus:outline-none" /></td>
+          <td class="p-1"><input type="text" value="${row.p4}" class="w-full text-center bg-transparent border-b border-transparent focus:border-indigo-400 focus:outline-none" /></td>
+          <td class="p-1 font-medium text-indigo-600"><input type="text" value="${row.eve}" class="w-full text-center bg-transparent border-b border-transparent focus:border-indigo-400 focus:outline-none" /></td>
+        </tr>
+      `).join('');
+    }
+
+    function updateLiveView() {
+      document.getElementById('viewName').innerText = document.getElementById('childName').value || "Student Name";
+      document.getElementById('viewGrade').innerText = `${document.getElementById('childGrade').value || "Class"} • Weekly Routine`;
+    }
+
+    function downloadPlannerImage() {
+      const card = document.getElementById('timetableCard');
+      html2canvas(card, { scale: 2 }).then((canvas) => {
+        canvas.toBlob((blob) => {
+          if (!blob) return;
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.download = 'kids-school-timetable.png';
+          a.href = url;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }, 300);
+        }, 'image/png');
+      });
+    }
+
+    function printTimetable() {
+      const card = document.getElementById('timetableCard');
+      html2canvas(card, { scale: 2 }).then((canvas) => {
+        const dataUrl = canvas.toDataURL('image/png');
+        const win = window.open('', '_blank');
+        win.document.write(`
+          <html>
+            <head><title>Print Kids Timetable</title></head>
+            <body style="margin:0; display:flex; justify-content:center; align-items:center; min-height:100vh; background:#fff;">
+              <img src="${dataUrl}" style="max-width:95%; height:auto;" onload="window.print(); window.close();" />
+            </body>
+          </html>
+        `);
+        win.document.close();
+      });
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(() => console.log('SW Registered'))
+          .catch((err) => console.log('SW Error', err));
+      });
+    }
+
+    renderTable();
+  </script>
+</body>
+</html>
